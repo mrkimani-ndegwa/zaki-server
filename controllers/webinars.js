@@ -19,7 +19,7 @@ const create_webinar = async (req, res) => {
             'User-Agent': 'Zoom-api-Jwt-Request',
             'content-type': 'application/json'
         },
-        body: JSON.stringify(req.body),
+        body: req.body,
         json: true //Parse the JSON string in the response
     };
 
