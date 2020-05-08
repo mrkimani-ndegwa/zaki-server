@@ -24,7 +24,7 @@ const create_webinar = async (req, res) => {
     //Store the options for Zoom API which will be used to make an API call later.
     const options = {
         //You can use a different uri if you're making an API call to a different Zoom endpoint.
-        // method: "POST",
+        method: "POST",
         uri: CREATE_WEBINARS_ENDPOINT, 
         auth: {
             'bearer': token
