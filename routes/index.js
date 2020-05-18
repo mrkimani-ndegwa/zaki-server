@@ -10,13 +10,20 @@ const {
     getAccessToken
 } = require("../controllers/auth");
 
+const {
+    getTimeZonesList
+} = require("../controllers/timezones");
+
 // utils
 const {
   authenticateJWT
 } = require("../utils");
 
 // Auth Routes
+// No JWT here
 Router.get('/auth', getAccessToken);
+Router.get("/timezones", getTimeZonesList);
+
 
 // Webinar Routes
 Router.post('/webinars', authenticateJWT, create_webinar);
