@@ -3,8 +3,13 @@ const rp = require('request-promise');
 const { ZOOM_WEBINAR_TYPE, 
     CREATE_WEBINARS_ENDPOINT, 
     LIST_WEBINARS_ENDPOINT,
-    LIST_AK_CAMPAIGN_EVENTS
+    LIST_AK_CAMPAIGN_EVENTS,
+    BASE_AK_CAMPAIGN_URL
 } = require("../constants");
+
+const {
+generateRequestOptions
+} = require("../utils");
 
 
 const create_webinar = async (req, res) => {
@@ -60,18 +65,24 @@ const list_webinars = async(req, res) => {
 
 const list_webinar_campaigns_on_actionkit = async (req, res)=>{
     try {
-    const options = {
-            // TODO: DRY up.
-            method: "GET",
-            uri: LIST_AK_CAMPAIGN_EVENTS, 
-            auth: {
-                'username': req.headers.username,
-                'password': req.headers.password
-            },
-            json: true //Parse the JSON string in the response
+    // Generate AUTH block
+    const auth = {
+        'username': req.headers.username,
+        'password': req.headers.password
     };
-    const response = await rp(options);
-    res.send({msg: "Success", data: response})
+    // Get Event Details
+    const campaignDetails = await rp(generateRequestOptions(
+        `${BASE_AK_CAMPAIGN_URL}184`,
+        auth
+    ));
+
+    const campaignEvents = await rp(generateRequestOptions(LIST_AK_CAMPAIGN_EVENTS,
+    auth));
+
+    res.send({msg: "Success", data: {
+        campaignEvents,
+        campaignDetails
+    }});
     
     } catch(e){
         res.send({msg: "Error", data: e.message})
