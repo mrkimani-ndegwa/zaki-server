@@ -30,7 +30,19 @@ const authenticateJWT = (req, res, next) => {
     }
 };
 
+// Attempt at DRYing out options.
+// Needs work
+const generateRequestOptions = (uri, auth) => {
+    return {
+        method: "GET",
+        uri, 
+        auth,
+        json: true //Parse the JSON string in the response
+};
+}
+
 module.exports = {
     generateSignedToken,
-    authenticateJWT
+    authenticateJWT,
+    generateRequestOptions
 }
