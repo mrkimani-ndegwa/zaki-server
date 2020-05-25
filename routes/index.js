@@ -3,7 +3,8 @@ const Router = require('express').Router();
 // Controllers
 const { 
     create_webinar,
-    list_webinars
+    list_webinars,
+    list_webinar_campaigns_on_actionkit
 } = require("../controllers/webinars");
 
 const {
@@ -28,5 +29,6 @@ Router.get("/timezones", getTimeZonesList);
 // Webinar Routes
 Router.post('/webinars', authenticateJWT, create_webinar);
 Router.get('/webinars', authenticateJWT, list_webinars);
+Router.get("/ak-webinar-campaigns", authenticateJWT, list_webinar_campaigns_on_actionkit);
 
 module.exports = Router;

@@ -1,5 +1,10 @@
 const rp = require('request-promise');
-const { ZOOM_WEBINAR_TYPE, CREATE_WEBINARS_ENDPOINT, LIST_WEBINARS_ENDPOINT } = require("../constants");
+
+const { ZOOM_WEBINAR_TYPE, 
+    CREATE_WEBINARS_ENDPOINT, 
+    LIST_WEBINARS_ENDPOINT,
+    LIST_AK_CAMPAIGN_EVENTS
+} = require("../constants");
 
 
 const create_webinar = async (req, res) => {
@@ -53,7 +58,28 @@ const list_webinars = async(req, res) => {
     
 };
 
+const list_webinar_campaigns_on_actionkit = async (req, res)=>{
+    try {
+    const options = {
+            // TODO: DRY up.
+            method: "GET",
+            uri: LIST_AK_CAMPAIGN_EVENTS, 
+            auth: {
+                'username': req.headers.username,
+                'password': req.headers.password
+            },
+            json: true //Parse the JSON string in the response
+    };
+    const response = await rp(options);
+    res.send({msg: "Success", data: response})
+    
+    } catch(e){
+        res.send({msg: "Error", data: e.message})
+    }
+}
+
 module.exports = {
     create_webinar,
-    list_webinars
+    list_webinars,
+    list_webinar_campaigns_on_actionkit
 }
