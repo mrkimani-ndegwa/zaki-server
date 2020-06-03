@@ -10,4 +10,3 @@ const getTimeZonesList = (req, res) => {
 module.exports = {
     getTimeZonesList
 };
-
