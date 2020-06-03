@@ -142,7 +142,7 @@ const zoomSupportedTimeZones = [
 ];
 
 const supportedTimezones = zoomSupportedTimeZones.map(timezone=>{
-    const [id, name] = timezone;
+    const [id, name] = timezone.split('\n');
     return {
         id,
         name
