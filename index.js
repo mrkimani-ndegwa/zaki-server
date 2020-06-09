@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
+const cors = require('cors');
 
 // Local Imports
 const Router = require('./routes');
@@ -16,6 +17,7 @@ app.use(logger('tiny'));
 
 app.use(bodyParser.urlencoded({'extended': 'true'}));
 app.use(bodyParser.json());
+app.use(cors());
 
 app.get('/', (req, res)=>{
     res.send({msg: "Welcome home! Confirm API Version to continue."})
