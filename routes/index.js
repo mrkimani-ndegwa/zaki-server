@@ -10,6 +10,10 @@ const {
 } = require("../controllers/webinars");
 
 const {
+    webhookListeners
+} = require("../controllers/webinar-webhooks");
+
+const {
     addWebinarRegistrants,
     listWebinarRegistrants
 } = require("../controllers/registrants")
@@ -31,6 +35,7 @@ const {
 // No JWT here
 Router.get('/auth', getAccessToken);
 Router.get("/timezones", getTimeZonesList);
+Router.post("/zaki-webhooks", webhookListeners)
 
 
 // Webinar Routes
