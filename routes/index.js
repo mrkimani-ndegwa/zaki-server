@@ -10,8 +10,12 @@ const {
 } = require("../controllers/webinars");
 
 const {
-    webhookListeners
+    webhookListeners,
 } = require("../controllers/webinar-webhooks");
+
+const {
+    updateEventAk
+} = require("../controllers/actionkit");
 
 const {
     addWebinarRegistrants,
@@ -35,6 +39,7 @@ const {
 // No JWT here
 Router.get('/auth', getAccessToken);
 Router.get("/timezones", getTimeZonesList);
+// Webhook Routes
 Router.post("/zaki-webhooks", webhookListeners)
 
 
@@ -48,5 +53,6 @@ Router.post('/webinars/:webinarId/registrants', authenticateJWT, addWebinarRegis
 Router.get('/webinars/:webinarId/registrants', authenticateJWT, listWebinarRegistrants);
 
 Router.get("/ak-webinar-campaigns", authenticateJWT, list_webinar_campaigns_on_actionkit);
+Router.put("/ak-webinar-campaigns/:eventId", authenticateJWT, updateEventAk);
 
 module.exports = Router;
