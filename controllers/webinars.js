@@ -1,6 +1,6 @@
 const rp = require('request-promise');
 
-const { ZOOM_WEBINAR_TYPE, 
+const { 
     CREATE_WEBINARS_ENDPOINT, 
     LIST_WEBINARS_ENDPOINT,
     LIST_AK_CAMPAIGN_EVENTS,
