@@ -10,6 +10,11 @@ const {
 generateRequestOptions
 } = require("../utils");
 
+const {
+AK_PASSWORD,
+AK_USERNAME
+} = require("../config");
+
 
 // Issue #35 Pale Github
 const list_webinar_campaigns_on_actionkit = async (req, res)=>{
@@ -43,8 +48,8 @@ const updateActionKitEvent = async(req, res)=> {
     try {
     // Generate AUTH block
     const auth = {
-        'username': req.headers.username,
-        'password': req.headers.password
+        'username': AK_USERNAME,
+        'password': AK_PASSWORD
     };
 
     // Get all events from ak. This could be simpler if we had our own db but TODO:
@@ -52,12 +57,11 @@ const updateActionKitEvent = async(req, res)=> {
     auth));
     // Grab Zoom ID from  webhook
     // We only pass payload to this guy.
-    console.log("Got here", req.body.payload)
     const zoomId = req.body.payload.object.id;
     const zoomURL = `https://350org.zoom.us/j/${zoomId}`;
+    console.log(campaignEvents, "campaign events")
     // Get correct actionkit event that corresponds
     const [event] = campaignEvents.objects.filter(event=>{
-        console.log(event.address1, "here")
         const [link,] = event.address1.split(",");
         const [, zoomLink] = link.split(" ") 
         return zoomLink === zoomURL
