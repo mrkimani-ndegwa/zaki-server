@@ -1,4 +1,5 @@
 const rp = require('request-promise');
+const moment = require('moment-timezone');
 
 const { 
     LIST_AK_CAMPAIGN_EVENTS,
@@ -59,7 +60,6 @@ const updateActionKitEvent = async(req, res)=> {
     // We only pass payload to this guy.
     const zoomId = req.body.payload.object.id;
     const zoomURL = `https://350org.zoom.us/j/${zoomId}`;
-    console.log(campaignEvents, "campaign events")
     // Get correct actionkit event that corresponds
     const [event] = campaignEvents.objects.filter(event=>{
         const [link,] = event.address1.split(",");
@@ -89,11 +89,25 @@ const updateActionKitEvent = async(req, res)=> {
        auth,
        json: true
    });
-
+    // {
+    //  id: 96346694245,
+    //  topic: '<topic>',
+    //  start_time: '2020-08-22T12:00:00Z',
+    //  duration: 105,
+    //  timezone: 'Pacific/Pago_Pago', 
+    //  agenda: '<AG>'
+    //  }
+    const DEFAULT_TIMEZONE = "Etc/Greenwich";
+    const startTime = moment(payload.start_time || oldEvent.starts_at).tz(payload.timezone || DEFAULT_TIMEZONE).format("YYYY-MM-DDTHH:mm:ss");
 
     const updatePayload = {
-        title: payload.topic
-    }
+        title: payload.topic || oldEvent.title,
+        public_description: payload.agenda || oldEvent.public_description,
+        starts_at: startTime
+    };
+
+    console.log(updatePayload, "paylaod is here ama??")
+
     const options = {
         uri: `${SINGLE_AK_EVENT}/${id}/`,
         method: "PUT",
@@ -110,8 +124,50 @@ const updateActionKitEvent = async(req, res)=> {
     }
 };
 
-const deleteEventAK = () => {
-    // TODO
+const deleteEventAK = async (req, res) => {
+    try {
+        // Generate AUTH block
+        const auth = {
+            'username': AK_USERNAME,
+            'password': AK_PASSWORD
+        };
+    
+        // Get all events from ak. This could be simpler if we had our own db but TODO:
+        const campaignEvents = await rp(generateRequestOptions(LIST_AK_CAMPAIGN_EVENTS,
+        auth));
+        // Grab Zoom ID from  webhook
+        // We only pass payload to this guy.
+        const zoomId = req.body.payload.object.id;
+        const zoomURL = `https://350org.zoom.us/j/${zoomId}`;
+        // Get correct actionkit event that corresponds
+        const [event] = campaignEvents.objects.filter(event=>{
+            const [link,] = event.address1.split(",");
+            const [, zoomLink] = link.split(" ") 
+            return zoomLink === zoomURL
+        });
+    
+        if(!event){
+            throw new Error("No such event found.")
+        };
+        // If we are here now we can proceed to PUT the AK Event
+        const id = event.id; // Correct AK Event ID.
+    
+        const options = {
+            uri: `${SINGLE_AK_EVENT}/${id}/`,
+            method: "PUT",
+            body: {
+                status: "deleted"
+            },
+            auth,
+            json: true
+        };
+    
+        const response = await rp(options);
+        res.send({data: response || "Success"})
+    
+        } catch(e){
+            res.send({msg: "Error", data: e && e.message || "Unknown Error Occured"})
+        }
 };
 
 const updateEventAk = (req, res) => {
