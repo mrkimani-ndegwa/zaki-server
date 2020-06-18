@@ -14,14 +14,11 @@ const webhookListeners = (req, res) => {
             updateActionKitEvent(req, res);
             break
         case WEBINAR_EVENTS.WEBINAR_DELETED:
-            deleteEventAK(req.body.payload, res);
+            deleteEventAK(req, res);
             break;
         default:
             return false
     }
-
-
-
 };
 
 exports.webhookListeners = webhookListeners;
