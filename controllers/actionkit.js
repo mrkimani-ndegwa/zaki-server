@@ -59,7 +59,6 @@ const updateActionKitEvent = async(req, res)=> {
     // We only pass payload to this guy.
     const zoomId = req.body.payload.object.id;
     const zoomURL = `https://350org.zoom.us/j/${zoomId}`;
-    console.log(campaignEvents, "campaign events")
     // Get correct actionkit event that corresponds
     const [event] = campaignEvents.objects.filter(event=>{
         const [link,] = event.address1.split(",");
@@ -90,10 +89,16 @@ const updateActionKitEvent = async(req, res)=> {
        json: true
    });
 
+   console.log(payload, "payload, Is here>>>>>>>>>>")
+   console.log(payload, "payload, Is here>>>>>>>>>>")
+   console.log(payload, "payload, Is here>>>>>>>>>>")
+   console.log(payload, "payload, Is here>>>>>>>>>>")
+   console.log(payload, "payload, Is here>>>>>>>>>>")
 
     const updatePayload = {
-        title: payload.topic
-    }
+        title: payload.topic || oldEvent.title,
+        // public_description: 
+    };
     const options = {
         uri: `${SINGLE_AK_EVENT}/${id}/`,
         method: "PUT",
