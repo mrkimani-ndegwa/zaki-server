@@ -1,4 +1,6 @@
 const rp = require('request-promise');
+const moment = require('moment-timezone');
+
 
 const { 
     CREATE_WEBINARS_ENDPOINT, 
@@ -129,6 +131,13 @@ const list_webinar_campaigns_on_actionkit = async (req, res)=>{
 
     const campaignEvents = await rp(generateRequestOptions(LIST_AK_CAMPAIGN_EVENTS,
     auth));
+    
+    const updatedCampaignEventsObjects = campaignEvents.objects.filter(campaign=>{
+        const starts_at_utc = moment(campaign.starts_at_utc);
+        return starts_at_utc.isAfter(moment().utc())
+    });
+
+    campaignEvents.objects = updatedCampaignEventsObjects
 
     res.send({msg: "Success", data: {
         campaignEvents,
