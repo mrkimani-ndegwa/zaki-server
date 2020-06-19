@@ -120,9 +120,10 @@ const list_webinar_campaigns_on_actionkit = async (req, res)=>{
     try {
     // Generate AUTH block
     const auth = {
-        'username': req.headers.username,
-        'password': req.headers.password
+        'username': AK_USERNAME,
+        'password': AK_PASSWORD
     };
+    
     // Get Event Details
     const campaignDetails = await rp(generateRequestOptions(
         `${BASE_AK_CAMPAIGN_URL}184`,
