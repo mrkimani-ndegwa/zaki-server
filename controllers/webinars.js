@@ -15,6 +15,11 @@ const {
 generateRequestOptions
 } = require("../utils");
 
+const {
+    AK_PASSWORD,
+    AK_USERNAME
+} = require("../config");
+
 
 const create_webinar = async (req, res) => {
     try {
@@ -123,7 +128,7 @@ const list_webinar_campaigns_on_actionkit = async (req, res)=>{
         'username': AK_USERNAME,
         'password': AK_PASSWORD
     };
-    
+
     // Get Event Details
     const campaignDetails = await rp(generateRequestOptions(
         `${BASE_AK_CAMPAIGN_URL}184`,
