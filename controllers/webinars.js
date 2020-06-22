@@ -140,7 +140,7 @@ const list_webinar_campaigns_on_actionkit = async (req, res)=>{
     
     const updatedCampaignEventsObjects = campaignEvents.objects.filter(campaign=>{
         const starts_at_utc = moment(campaign.starts_at_utc);
-        return starts_at_utc.isAfter(moment().utc())
+        return starts_at_utc.isAfter(moment().utc()) && campaign.status !== "deleted"
     });
 
     campaignEvents.objects = updatedCampaignEventsObjects
