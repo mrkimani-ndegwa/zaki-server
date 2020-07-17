@@ -57,6 +57,8 @@ const updateActionKitEvent = async(req, res)=> {
     // Get all events from ak. This could be simpler if we had our own db but TODO:
     const campaignEvents = await rp(generateRequestOptions(LIST_AK_CAMPAIGN_EVENTS,
     auth));
+
+    console.log(campaignEvents, "ALL EVENTS")
     // Grab Zoom ID from  webhook
     // We only pass payload to this guy.
     const zoomId = req.body.payload.object.id;
@@ -68,9 +70,12 @@ const updateActionKitEvent = async(req, res)=> {
         return zoomLink === zoomURL
     });
 
+    
     if(!event){
         throw new Error("No such event found.")
     };
+    
+    console.log(event, "Event is here")
     // If we are here now we can proceed to PUT the AK Event
     const payload = req.body.payload.object;
     const id = event.id; // Correct AK Event ID.
