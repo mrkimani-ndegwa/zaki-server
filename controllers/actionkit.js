@@ -46,6 +46,7 @@ const list_webinar_campaigns_on_actionkit = async (req, res)=>{
 
 // From webhook
 const updateActionKitEvent = async(req, res)=> {
+    console.log(req.body, "Body find here.")
     try {
     // Generate AUTH block
     const auth = {
