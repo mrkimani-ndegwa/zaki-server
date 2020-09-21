@@ -10,6 +10,11 @@ const {
 } = require("../controllers/webinars");
 
 const {
+    create_meeting,
+    list_meetings
+} = require("../controllers/meetings");
+
+const {
     webhookListeners,
 } = require("../controllers/webinar-webhooks");
 
@@ -48,6 +53,10 @@ Router.post('/webinars', authenticateJWT, create_webinar);
 Router.get('/webinars', authenticateJWT, list_webinars);
 Router.patch('/webinars/:webinarId', authenticateJWT, update_webinar_details);
 Router.get('/webinars/:webinarId', authenticateJWT, get_webinar);
+
+// Meeting Routes
+Router.post('/meetings', authenticateJWT, create_meeting);
+Router.get('/meetings', authenticateJWT, list_meetings);
 
 Router.post('/webinars/:webinarId/registrants', authenticateJWT, addWebinarRegistrants);
 Router.get('/webinars/:webinarId/registrants', authenticateJWT, listWebinarRegistrants);
