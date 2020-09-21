@@ -46,7 +46,6 @@ const list_webinar_campaigns_on_actionkit = async (req, res)=>{
 
 // From webhook
 const updateActionKitEvent = async(req, res)=> {
-    console.log(req.body, "Body find here.")
     try {
     // Generate AUTH block
     const auth = {
@@ -58,7 +57,6 @@ const updateActionKitEvent = async(req, res)=> {
     const campaignEvents = await rp(generateRequestOptions(LIST_AK_CAMPAIGN_EVENTS,
     auth));
 
-    console.log(campaignEvents, "ALL EVENTS")
     // Grab Zoom ID from  webhook
     // We only pass payload to this guy.
     const zoomId = req.body.payload.object.id;
@@ -75,7 +73,6 @@ const updateActionKitEvent = async(req, res)=> {
         throw new Error("No such event found.")
     };
     
-    console.log(event, "Event is here")
     // If we are here now we can proceed to PUT the AK Event
     const payload = req.body.payload.object;
     const id = event.id; // Correct AK Event ID.
@@ -111,8 +108,6 @@ const updateActionKitEvent = async(req, res)=> {
         public_description: payload.agenda || oldEvent.public_description,
         starts_at: startTime
     };
-
-    console.log(updatePayload, "paylaod is here ama??")
 
     const options = {
         uri: `${SINGLE_AK_EVENT}/${id}/`,
