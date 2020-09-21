@@ -1,6 +1,8 @@
 const rp = require('request-promise');
+const moment = require('moment-timezone');
 
-const { ZOOM_WEBINAR_TYPE, 
+
+const { 
     CREATE_WEBINARS_ENDPOINT, 
     LIST_WEBINARS_ENDPOINT,
     LIST_AK_CAMPAIGN_EVENTS,
@@ -12,6 +14,11 @@ const { ZOOM_WEBINAR_TYPE,
 const {
 generateRequestOptions
 } = require("../utils");
+
+const {
+    AK_PASSWORD,
+    AK_USERNAME
+} = require("../config");
 
 
 const create_webinar = async (req, res) => {
@@ -118,9 +125,10 @@ const list_webinar_campaigns_on_actionkit = async (req, res)=>{
     try {
     // Generate AUTH block
     const auth = {
-        'username': req.headers.username,
-        'password': req.headers.password
+        'username': AK_USERNAME,
+        'password': AK_PASSWORD
     };
+
     // Get Event Details
     const campaignDetails = await rp(generateRequestOptions(
         `${BASE_AK_CAMPAIGN_URL}184`,
@@ -129,6 +137,13 @@ const list_webinar_campaigns_on_actionkit = async (req, res)=>{
 
     const campaignEvents = await rp(generateRequestOptions(LIST_AK_CAMPAIGN_EVENTS,
     auth));
+    
+    const updatedCampaignEventsObjects = campaignEvents.objects.filter(campaign=>{
+        const starts_at_utc = moment(campaign.starts_at_utc);
+        return starts_at_utc.isAfter(moment().utc()) && campaign.status !== "deleted"
+    });
+
+    campaignEvents.objects = updatedCampaignEventsObjects
 
     res.send({msg: "Success", data: {
         campaignEvents,
