@@ -35,6 +35,10 @@ const {
     getTimeZonesList
 } = require("../controllers/timezones");
 
+const {
+    getCountriesList
+} = require("../controllers/countries");
+
 // utils
 const {
   authenticateJWT
@@ -44,6 +48,7 @@ const {
 // No JWT here
 Router.get('/auth', getAccessToken);
 Router.get("/timezones", getTimeZonesList);
+Router.get("/countries", getCountriesList);
 // Webhook Routes
 Router.post("/zaki-webhooks", webhookListeners)
 
