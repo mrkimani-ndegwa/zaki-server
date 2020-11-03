@@ -129,7 +129,7 @@ const list_webinar_campaigns_on_actionkit = async (req, res)=>{
         'password': AK_PASSWORD
     };
 
-    console.log(req, "Request is here")
+    console.log(req.query, "Request is here")
     const campaign = req.query.campaignId || 184;
 
     // Get Event Details
