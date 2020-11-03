@@ -131,6 +131,7 @@ const list_webinar_campaigns_on_actionkit = async (req, res)=>{
 
     console.log(req.query, "Request is here")
     const campaign = req.query.campaignId || 184;
+    const eventsURL = req.query.campaignId ? `https://act.350.org/rest/v1/event/?campaign=${req.query.campaignId}` || LIST_AK_CAMPAIGN_EVENTS;
 
     // Get Event Details
     const campaignDetails = await rp(generateRequestOptions(
@@ -138,7 +139,7 @@ const list_webinar_campaigns_on_actionkit = async (req, res)=>{
         auth
     ));
 
-    const campaignEvents = await rp(generateRequestOptions(LIST_AK_CAMPAIGN_EVENTS,
+    const campaignEvents = await rp(generateRequestOptions(eventsURL,
     auth));
     
     const updatedCampaignEventsObjects = campaignEvents.objects.filter(campaign=>{
