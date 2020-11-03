@@ -129,9 +129,11 @@ const list_webinar_campaigns_on_actionkit = async (req, res)=>{
         'password': AK_PASSWORD
     };
 
+    const campaign = req.params.campaignId || 184;
+
     // Get Event Details
     const campaignDetails = await rp(generateRequestOptions(
-        `${BASE_AK_CAMPAIGN_URL}184`,
+        `${BASE_AK_CAMPAIGN_URL}${campaign}`,
         auth
     ));
 

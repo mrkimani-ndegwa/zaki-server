@@ -19,7 +19,7 @@ const {
 } = require("../controllers/webinar-webhooks");
 
 const {
-    updateEventAk
+    updateEventAk,
 } = require("../controllers/actionkit");
 
 const {
