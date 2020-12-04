@@ -2,16 +2,23 @@ const rp = require('request-promise');
 
 const { 
     CREATE_MEETINGS_ENDPOINT, 
-    LIST_MEETINGS_ENDPOINT
+    LIST_MEETINGS_ENDPOINT,
+    returnAppropriateURLFromUserId
 } = require("../constants");
 
 const create_meeting = async (req, res) => {
     try {
     //Store the options for Zoom API which will be used to make an API call later.
+    let meetingsEndpoint = CREATE_MEETINGS_ENDPOINT;
+    if(req.body.email){
+        const url = returnAppropriateURLFromUserId(req.body.email);
+        meetingsEndpoint = `${url}/meetings`
+    };
+    
     const options = {
         //You can use a different uri if you're making an API call to a different Zoom endpoint.
         method: "POST",
-        uri: CREATE_MEETINGS_ENDPOINT, 
+        uri: meetingsEndpoint, 
         auth: {
             'bearer': req.headers.authorization
         },

@@ -6,7 +6,10 @@ const {
     ZOOM_API_BASE_URL,
     WEBINARS_USER_ID,
     AK_USERNAME,
-    AK_PASSWORD
+    AK_PASSWORD,
+    ZOOM_350_ORG_USER_ID,
+    AFRICA_USER_ID,
+    EUROPE_ADMIN_USER_ID,
 } = process.env
 
 module.exports = {
@@ -17,5 +20,8 @@ module.exports = {
     ZOOM_API_BASE_URL,
     WEBINARS_USER_ID,
     AK_PASSWORD,
-    AK_USERNAME
+    AK_USERNAME,
+    ZOOM_350_ORG_USER_ID,
+    AFRICA_USER_ID,
+    EUROPE_ADMIN_USER_ID
 }
